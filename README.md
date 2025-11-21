@@ -340,3 +340,5 @@ Your device should continuously listen for the characteristic sound pattern of a
 If it detects such a sound, your device should activate its own alarm — even if the flame sensor has not yet been triggered.
 
 You can refer to the example solution code in the `Sketches` folder called `9-full-system.ino`.
+
+> Tip: You can assume that the surrounding sounds are ignored and you trigger an alarm if you hear loud enough beeps from another fire alarm.
