@@ -342,3 +342,4 @@ If it detects such a sound, your device should activate its own alarm — even i
 You can refer to the example solution code in the `Sketches` folder called `9-full-system.ino`.
 
 > Tip: You can assume that the surrounding sounds are ignored and you trigger an alarm if you hear loud enough beeps from another fire alarm.
+> If you really want to go all in, you can add a cooldown for the alarm after shaking to reset.
