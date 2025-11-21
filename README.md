@@ -1,29 +1,15 @@
 # Fire Alarm Tutorial using Seeed XIAO nRF52840 Sense  
-### Complete Step-by-Step Guide (with fixes for Serial + Python requirements)
 
 > ⚠️ **Safety Disclaimer**  
-> This is an educational prototype, not a certified fire detection system.
-
----
+> This is an educational prototype, not a certified fire detection system. Do not use it by any means.
 
 # 1. Overview
 
 This tutorial builds a simple prototype fire alarm using:
 
-- Seeed XIAO nRF52840 Sense  
+- Seeed XIAO nRF52840 Sense and its on-board LED  
 - Analog flame sensor  
 - Active buzzer  
-- Heartbeat LED  
-
-It includes:
-
-- Full Arduino setup  
-- Python requirement fix (needed for Seeed nRF52 core)  
-- Fixed sketches including required `Adafruit_TinyUSB.h`  
-- Wiring instructions  
-- Optional Fritzing diagram tips  
-
----
 
 # 2. Materials
 
@@ -38,45 +24,13 @@ It includes:
 
 > ⚠️ XIAO uses **3.3 V** logic. Never connect 5 V devices to GPIO pins.
 
----
-
 ## 2.2 Software Requirements
 
-### Arduino IDE  
-Install from:  
-https://www.arduino.cc/en/software
+### 2.2.1 Install Python (Required for Seeed nRF52 Core)
 
-### Seeed nRF52 Board Support  
-In Arduino IDE:
+Make sure python is installed on your machine.
 
-```
-File → Preferences → Additional Boards Manager URLs
-```
-
-Add:
-
-```
-https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json
-```
-
-Then:
-
-```
-Tools → Board → Boards Manager → Search "Seeed nRF52"
-→ Install "Seeed nRF52 Boards"
-```
-
----
-
-# 3. IMPORTANT: Install Python (Required for Seeed nRF52 Core)
-
-If Python is missing, compilation fails with:
-
-```
-exec: "python": executable file not found in $PATH
-```
-
-## macOS
+#### macOS
 
 Install Python 3:
 
@@ -84,74 +38,66 @@ Install Python 3:
 brew install python
 ```
 
-Create a `python` alias (Arduino expects this name):
+Make sure `python` is in your $PATH and can be rund from your command line. Potentially create an Alias for `python3` (ask chatGPT).
 
-```bash
-echo 'alias python=/usr/bin/env python3' >> ~/.zshrc
-source ~/.zshrc
-```
-
-## Windows
+#### Windows
 
 Install from:  
 https://www.python.org/downloads/windows/
 
 **Check “Add Python to PATH”** during installation.
 
-Restart Arduino IDE.
+### 2.2.2 Arduino IDE  
+Install from:  
+https://www.arduino.cc/en/software
 
----
+### 2.2.3 Seeed nRF52 Board Support  
+In Arduino IDE: 
+- File → Preferences → Additional Boards Manager URLs
 
-# 4. Setup the Board
+Add: `https://files.seeedstudio.com/arduino/package_seeeduino_boards_index.json`
 
-1. Connect XIAO nRF52840 Sense via USB‑C  
-2. Select:
+Then: 
+- Tools → Board → Boards Manager → Search "Seeed nRF52"
+- Install "Seeed nRF52 Boards"
+
+
+# 3. Setup the Board
+
+1. Take the board and put it onto the breadboard like shown in the image below.
+  
+2. Connect XIAO nRF52840 Sense via USB‑C  
+3. Select:
 
 ```
 Tools → Board → Seeed nRF52 Boards → Seeed XIAO nRF52840 Sense
 Tools → Port → (Select XIAO USB port)
 ```
 
----
+# 4. Step 1 – Make LED Blink to show that alarm is active
+Before we build any real functionality, we first need a simple sign that the device is alive, like a heartbeat in a human.
+A blinking LED is our device saying:
 
-# 5. Required Fix for Serial on XIAO nRF52840
+> I’m running, powered, and ready for instructions.
 
-To use `Serial` on this board you **must** include:
+It’s the very first diagnostic feature of almost every embedded system. If this step doesn’t work, nothing else will.
+It also gives immediate feedback to learners: “You uploaded code successfully — you’re in control.”
 
-```cpp
-#include <Adafruit_TinyUSB.h>
-```
-
-Otherwise you get:
-
-```
-undefined reference to Adafruit_USBD_CDC::begin
-```
-
-All sketches in this tutorial include this fix.
-
----
-
-# 6. Step 1 – Alive LED Blink
-
-Create folder:
-
-```
-01_Alive_LED/01_Alive_LED.ino
-```
+Copy the following sketch into your Arduino IDE. Per default, a *.ino sketch will already be open.
 
 ### Code
 
 ```cpp
-// 01_Alive_LED.ino
 // Simple heartbeat blink
 
-#define LED_PIN LED_BUILTIN // active LOW
+#define LED_PIN LED_BUILTIN // active LOW, built in LED of the nrf52840 Sense
 
+// this function is called once during startup
 void setup() {
   pinMode(LED_PIN, OUTPUT);
 }
 
+// this function is called periodically after the device has booted
 void loop() {
   digitalWrite(LED_PIN, LOW);   // LED ON
   delay(200);
