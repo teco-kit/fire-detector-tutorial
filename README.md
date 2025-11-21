@@ -162,52 +162,47 @@ What is actually going on electrically?
 
 The sensor continuously outputs a voltage between 0 V and ~3.3 V, depending on how much infrared light it sees.
 
-No flame → low voltage
-
-Strong flame → higher voltage
+- No flame → low voltage
+- Strong flame → higher voltage
 
 Your XIAO board measures this voltage using the ADC and gives you a number typically from 0 to 1023 (10-bit resolution), where:
 
-0 ≙ 0 V
-
-1023 ≙ 3.3 V
+- 0 ≙ 0 V
+- 1023 ≙ 3.3 V
 
 This means you’re not detecting “fire yes/no,” but rather a continuous intensity value that you can later threshold to make decisions.
 
-## Wiring
+### Wiring
 
-| XIAO Pin | Sensor Pin | Description |
-|---------|-------------|-------------|
-| 3V3     | VCC         | Power       |
-| GND     | GND         | Ground      |
-| A0      | AO          | Analog signal |
+<img height="400" alt="sensor" src="https://github.com/user-attachments/assets/4e2aa8d6-5deb-4ded-8dca-245552db5915" />
 
-## Sketch 2 – Flame Sensor
-
-Replace the code inside your sketch as shown below.
 
 ### Code
 
+Replace the code inside your sketch with the code below.
+
 ```cpp
-#include <Adafruit_TinyUSB.h>  // IMPORTANT for Serial on XIAO
+#include <Adafruit_TinyUSB.h>  // Required for USB Serial on XIAO boards
 
-// 02_Flame_Sensor_Read.ino
-
-#define FIRE_SENSOR_PIN A0
+#define FIRE_SENSOR_PIN A0     // Analog pin where the flame sensor output is connected
 
 void setup() {
-  Serial.begin(115200);
-  while (!Serial) delay(10);
+  Serial.begin(115200);        // Start Serial communication at 115200 baud
+  while (!Serial) delay(10);   // Wait for Serial connection (important for USB-based boards)
 
-  pinMode(FIRE_SENSOR_PIN, INPUT);
-  Serial.println("Flame sensor test...");
+  pinMode(FIRE_SENSOR_PIN, INPUT);  // Configure the flame sensor pin as input
+  Serial.println("Flame sensor test..."); // Initial message
 }
 
 void loop() {
+  // Read analog value from the flame sensor
   int sensorValue = analogRead(FIRE_SENSOR_PIN);
+
+  // Print the sensor value over Serial
   Serial.print("Value: ");
   Serial.println(sensorValue);
-  delay(500);
+
+  delay(500); // Small delay between readings
 }
 ```
 
@@ -225,127 +220,65 @@ Converts the analog voltage from the sensor into a number between 0–1023.
 `Serial.println(sensorValue)`
 You'll see the intensity change in the Serial Monitor when you bring a flame (or even a bright lighter LED) close to the sensor.
 
-# 8. Step 2.5 – Heartbeat LED + Sensor
+# 6. Add the buzzer
+When fire alarm detects something, you’ll want the system to react in a way that’s impossible to miss.
+That’s where the active buzzer comes in. An active buzzer already contains its own oscillator, meaning you don’t have to generate tones or waveforms in software.
+All you do is drive a pin HIGH to turn it on, and LOW to turn it off, just like controlling an LED.
 
-Create folder:
+This makes it perfect for alarms as it has simple wiring and no timing-critical code while it is loud and gives immediate feedback.
 
-```
-03_Heartbeat_And_Sensor/03_Heartbeat_And_Sensor.ino
-```
-
-### Code
-
-```cpp
-#include <Adafruit_TinyUSB.h>
-
-#define LED_PIN LED_BUILTIN
-#define FIRE_SENSOR_PIN A0
-
-void setup() {
-  Serial.begin(115200);
-  while (!Serial) delay(10);
-
-  pinMode(LED_PIN, OUTPUT);
-  pinMode(FIRE_SENSOR_PIN, INPUT);
-  Serial.println("Heartbeat + Sensor running...");
-}
-
-void loop() {
-  digitalWrite(LED_PIN, LOW);      // LED ON
-  int sensorValue = analogRead(FIRE_SENSOR_PIN);
-  Serial.println(sensorValue);
-  delay(200);
-
-  digitalWrite(LED_PIN, HIGH);     // LED OFF
-  delay(1800);
-}
-```
-
-Use this to determine your threshold:
-
-Example values:
-
-```
-No flame: ~800
-Flame:    ~200
--> Threshold: ~400
-```
-
-# 9. Step 3 – Add the Buzzer (Alarm Output)
+In our project, the buzzer becomes the “alarm output” that reacts whenever the flame sensor value drops below your fire threshold.
+Later, in the full sketch, we combine LED flashing and buzzer activation to create a clear, attention-grabbing warning signal.
 
 
+### Wiring
 
-## Wiring
-
-| XIAO Pin | Buzzer Pin |
-|----------|------------|
-| D6       | +          |
-| GND      | -          |
-
-<img height="400" alt="full" src="https://github.com/user-attachments/assets/b53d7e43-6a69-45fe-bf40-aa0ba5254fd3" />
-
-
-# 10. Step 4 – Full Fire Alarm
-
-Create folder:
-
-```
-04_Fire_Alarm/04_Fire_Alarm.ino
-```
+<img height="400" alt="full" src="https://github.com/user-attachments/assets/09aedd64-bfea-4867-8ef8-eea9b9fdee08" />
 
 ### Code
-
 ```cpp
-#include <Adafruit_TinyUSB.h>
-
-#define LED_PIN         LED_BUILTIN
-#define FIRE_SENSOR_PIN A0
-#define BUZZER_PIN      6
-
-const int FIRE_THRESHOLD = 400; // adjust based on your readings
+#define BUZZER_PIN 6    // Digital pin used to control the buzzer
 
 void setup() {
-  Serial.begin(115200);
-  while (!Serial) delay(10);
-
-  pinMode(LED_PIN, OUTPUT);
-  pinMode(FIRE_SENSOR_PIN, INPUT);
+  // Configure the buzzer pin as an output
   pinMode(BUZZER_PIN, OUTPUT);
 
-  digitalWrite(LED_PIN, HIGH);
+  // Make sure the buzzer starts OFF
   digitalWrite(BUZZER_PIN, LOW);
-
-  Serial.println("Fire alarm running...");
 }
 
 void loop() {
-  int val = analogRead(FIRE_SENSOR_PIN);
-  Serial.print("Sensor: ");
-  Serial.println(val);
+  // --- Turn the buzzer ON ---
+  // Active buzzer: HIGH = sound, LOW = no sound
+  digitalWrite(BUZZER_PIN, HIGH);
+  delay(1000);  // Keep the buzzer on for 1 second
 
-  bool fire = val < FIRE_THRESHOLD;
-
-  if (fire) {
-    Serial.println(">>> FIRE DETECTED <<<");
-
-    for (int i = 0; i < 5; i++) {
-      digitalWrite(LED_PIN, LOW);
-      digitalWrite(BUZZER_PIN, HIGH);
-      delay(100);
-
-      digitalWrite(LED_PIN, HIGH);
-      digitalWrite(BUZZER_PIN, LOW);
-      delay(100);
-    }
-    delay(500);
-
-  } else {
-    digitalWrite(BUZZER_PIN, LOW);
-
-    digitalWrite(LED_PIN, LOW);
-    delay(200);
-    digitalWrite(LED_PIN, HIGH);
-    delay(1800);
-  }
+  // --- Turn the buzzer OFF ---
+  digitalWrite(BUZZER_PIN, LOW);
+  delay(1000);  // Stay silent for 1 second
 }
+
 ```
+
+
+# 7. Puting it all together
+
+By now, you’ve explored and tested every major component of your system individually:
+- the heartbeat LED shows the device is alive
+- the flame sensor provides continuous analog readings
+- the buzzer can generate a loud alarm signal
+
+You’ve seen how each part behaves on its own and now it’s time to bring them together.
+
+In this step, you will build the complete fire alarm yourself.
+That means writing the logic that links sensing, decision-making, and reacting into one continuous loop.
+Your final program should:
+- read the flame sensor value in real time
+- compare the value against your chosen threshold
+- trigger the buzzer and LED when a flame is detected
+- keep the LED blinking normally when everything is safe
+- (optional) print useful information over Serial so you can debug what’s happening
+
+Use the knowledge from the previous sections to write your own combined sketch.
+Once finished, you’ll have a fully working, responsive prototype fire alarm running on the XIAO nRF52840 Sense.
+In the folder `Sketches` of this repository you can also find an example solution.
