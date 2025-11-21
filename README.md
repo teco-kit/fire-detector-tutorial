@@ -1,7 +1,15 @@
-# Fire Alarm Tutorial using Seeed XIAO nRF52840 Sense  
+# 🔥 Fire Alarm Tutorial using Seeed XIAO nRF52840 Sense  
+This guide walks you through building a simple but functional fire-detection prototype using the Seeed XIAO nRF52840 Sense.
+It’s a hands-on introduction to reading analog sensors, reacting to thresholds, and driving outputs like LEDs and buzzers — essentially a compact example of how embedded systems sense the world and respond to it.
+
+<br/>
+
+<img height="400" alt="image" src="https://github.com/user-attachments/assets/57433d65-d407-47e3-ba9c-10353f4bfc80" />
+
 
 > ⚠️ **Safety Disclaimer**  
 > This is an educational prototype, not a certified fire detection system. Do not use it by any means.
+> The sensor is triggered by infrared heat radiation, hence it might also trigger in direct sunligh - a common problem even for commercial infrared fire alarms.
 
 # 1. Overview
 
