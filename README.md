@@ -177,11 +177,12 @@ This means you’re not detecting “fire yes/no,” but rather a continuous int
 <img height="400" alt="sensor" src="https://github.com/user-attachments/assets/4e2aa8d6-5deb-4ded-8dca-245552db5915" />
 
 You’ll notice a pair of red and black wires going to the breadboard rails. These “extend” the XIAO Sense’s power (red, 3.3V) and ground (black, GND) pins across the breadboard, making it easier to plug in additional components later and keeping everything neat and organized. From these rails, the flame sensor is powered by connecting to the `+` pin of the breakout board. Without this, the sensor wouldn’t turn on.
-Next, we connect the ground (GND) of the XIAO Sense to the GND of the flame sensor. This shared ground creates a common electrical reference between the devices. Without a shared ground, the signal coming from the sensor would appear “floating” and the XIAO wouldn’t be able to interpret it correctly. Finally, the most important part is the signal wire. The flame sensor outputs an analog signal (more on that later). This signal is routed from the flame sensor's A0 pin to the A0 analog input pin of the XIAO Sense.
 
+Next, we connect the ground (GND) of the XIAO Sense to the GND of the flame sensor. This shared ground creates a common electrical reference between the devices. Without a shared ground, the signal coming from the sensor would appear “floating” and the XIAO wouldn’t be able to interpret it correctly. 
 
+Finally, the most important part is the signal wire. The flame sensor outputs an analog signal. This signal is routed from the flame sensor's A0 pin to the A0 analog input pin of the XIAO Sense.
 
-With these three essential connections—power, ground, and signal—your IR receiver becomes fully functional and ready to decode infrared remote control signals.
+With these three essential connections: power, ground, and signal; the flame sensor becomes fully functional and ready to decode infrared light coming from flames.
 
 ### Code
 
@@ -225,6 +226,28 @@ Converts the analog voltage from the sensor into a number between 0–1023.
 
 `Serial.println(sensorValue)`
 You'll see the intensity change in the Serial Monitor when you bring a flame (or even a bright lighter LED) close to the sensor.
+
+**How to receive the Serial output?**
+The Arduino IDE has a built-in serial monitor. You can find it in the top-right corner (magnifying glass icon).
+
+**How to calibrate the sensor?**
+
+To calibrate the flame sensor, you use the small blue potentiometer (the tiny adjustable dial) on the sensor board. This dial controls the analog sensitivity by adjusting the internal reference voltage of the amplifier, which determines how much infrared light is required before the sensor output changes noticeably. 
+
+<img height="300" alt="image" src="https://github.com/user-attachments/assets/d3c0c60d-caf9-4447-b404-5922c26ad83b" />
+
+Turning the dial clockwise generally makes the sensor more sensitive, reacting to smaller amounts of IR light, while turning it counter-clockwise decreases sensitivity so that only stronger IR signals trigger a response. To calibrate it properly, open the Arduino Serial Monitor so you can observe the live sensor values. Then follow these steps:
+
+- Point the sensor at a flame (lighter) and watch how the analog values change.
+- If the numbers barely change when a flame is present, increase sensitivity by turning the dial clockwise in very small increments.
+- If the sensor reacts even without a flame (for example from sunlight or reflections), decrease sensitivity by turning the dial counter-clockwise.
+
+Stop adjusting when:
+- No flame → readings stay stable
+- Flame present → values change clearly and consistently
+
+**⚠️ For best results, avoid calibrating in direct sunlight. In genral, the sensor will not properly detect flames in direct sunlight.**
+
 
 # 6. Add the buzzer
 When fire alarm detects something, you’ll want the system to react in a way that’s impossible to miss.
@@ -287,7 +310,7 @@ Your final program should:
 
 Use the knowledge from the previous sections to write your own combined sketch.
 Once finished, you’ll have a fully working, responsive prototype fire alarm running on the XIAO nRF52840 Sense.
-In the folder `Sketches` of this repository you can also find an example solution (`7-simple-fire-alarm`).
+In the folder `Sketches` of this repository you can also find an example solution `7-simple-fire-alarm`.
 
 # 8. BONUS: Shake to disable fire alarm
 In this optional extension, you add a basic user interaction to your fire alarm using the built-in IMU of the XIAO nRF52840 Sense.
