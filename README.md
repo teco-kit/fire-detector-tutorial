@@ -339,4 +339,4 @@ In this bonus task, you implement a simple version of this behavior using the XI
 Your device should continuously listen for the characteristic sound pattern of another alarm (for example a buzzer tone).
 If it detects such a sound, your device should activate its own alarm — even if the flame sensor has not yet been triggered.
 
-You can refer to the example solution code in the `Sketches` folder if you want to use the microphone for the appliance that you build as the final assingment of the lecture.
+You can refer to the example solution code in the `Sketches` folder called `9-full-system.ino`.
