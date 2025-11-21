@@ -176,6 +176,12 @@ This means you’re not detecting “fire yes/no,” but rather a continuous int
 
 <img height="400" alt="sensor" src="https://github.com/user-attachments/assets/4e2aa8d6-5deb-4ded-8dca-245552db5915" />
 
+You’ll notice a pair of red and black wires going to the breadboard rails. These “extend” the XIAO Sense’s power (red, 3.3V) and ground (black, GND) pins across the breadboard, making it easier to plug in additional components later and keeping everything neat and organized. From these rails, the flame sensor is powered by connecting to the `+` pin of the breakout board. Without this, the sensor wouldn’t turn on.
+Next, we connect the ground (GND) of the XIAO Sense to the GND of the flame sensor. This shared ground creates a common electrical reference between the devices. Without a shared ground, the signal coming from the sensor would appear “floating” and the XIAO wouldn’t be able to interpret it correctly. Finally, the most important part is the signal wire. The flame sensor outputs an analog signal (more on that later). This signal is routed from the flame sensor's A0 pin to the A0 analog input pin of the XIAO Sense.
+
+
+
+With these three essential connections—power, ground, and signal—your IR receiver becomes fully functional and ready to decode infrared remote control signals.
 
 ### Code
 
