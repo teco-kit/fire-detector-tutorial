@@ -7,7 +7,7 @@ It’s a hands-on introduction to reading analog sensors, reacting to thresholds
 
 > ⚠️ **Safety Disclaimer**  
 > This is an educational prototype, not a certified fire detection system. Do not use it by any means.
-> The sensor is triggered by infrared heat radiation, hence it might also trigger in direct sunlight. This is a common problem even for commercial infrared fire alarms.
+> The sensor is triggered by infrared light, hence it might also trigger in direct sunlight. This is a common problem even for commercial infrared fire alarms.
 
 # 1. Overview
 
@@ -154,6 +154,25 @@ Understanding this is important because many embedded boards use active-LOW LEDs
 
 
 # 5. Connect the flame sensor and read sensor values
+Now that the LED blink confirmed the board is alive, we can move to our first real input device: a simple analog flame sensor.
+This sensor outputs a voltage that increases when it detects infrared light (the strong IR signature of a flame).
+Our microcontroller then measures this voltage using its built-in analog-to-digital converter (ADC).
+
+What is actually going on electrically?
+
+The sensor continuously outputs a voltage between 0 V and ~3.3 V, depending on how much infrared light it sees.
+
+No flame → low voltage
+
+Strong flame → higher voltage
+
+Your XIAO board measures this voltage using the ADC and gives you a number typically from 0 to 1023 (10-bit resolution), where:
+
+0 ≙ 0 V
+
+1023 ≙ 3.3 V
+
+This means you’re not detecting “fire yes/no,” but rather a continuous intensity value that you can later threshold to make decisions.
 
 ## Wiring
 
@@ -165,11 +184,7 @@ Understanding this is important because many embedded boards use active-LOW LEDs
 
 ## Sketch 2 – Flame Sensor
 
-Create folder:
-
-```
-02_Flame_Sensor_Read/02_Flame_Sensor_Read.ino
-```
+Replace the code inside your sketch as shown below.
 
 ### Code
 
@@ -195,6 +210,20 @@ void loop() {
   delay(500);
 }
 ```
+
+**What does this code do?**
+
+`Serial.begin(115200);`
+Opens a USB serial connection so we can print sensor values. 115200 is the baudrate, which configures the communication speed.
+
+`while (!Serial);`
+Waits until the computer actually opens the serial port—important for the XIAO platform. This ensures we are not sending any data before the computer connects to the board.
+
+`analogRead(FIRE_SENSOR_PIN);`
+Converts the analog voltage from the sensor into a number between 0–1023.
+
+`Serial.println(sensorValue)`
+You'll see the intensity change in the Serial Monitor when you bring a flame (or even a bright lighter LED) close to the sensor.
 
 # 8. Step 2.5 – Heartbeat LED + Sensor
 
