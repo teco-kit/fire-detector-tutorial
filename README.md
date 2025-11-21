@@ -21,12 +21,13 @@ This tutorial builds a simple prototype fire alarm using:
 
 ## 2.1 Hardware
 
-- **Seeed XIAO nRF52840 Sense**
+- [Seeed XIAO nRF52840 Sense](https://wiki.seeedstudio.com/XIAO_BLE/)
+- Analog flame sensor (VCC / GND / AO)
+- Active buzzer (3.3 V compatible)
 - USB‑C data cable  
 - Breadboard  
 - Jumper wires  
-- **Analog flame/light sensor** (VCC / GND / AO)
-- **Active buzzer (3.3 V compatible)**
+
 
 > ⚠️ XIAO uses **3.3 V** logic. Never connect 5 V devices to GPIO pins.
 
@@ -81,6 +82,12 @@ Then:
 Tools → Board → Seeed nRF52 Boards → Seeed XIAO nRF52840 Sense
 Tools → Port → (Select XIAO USB port)
 ```
+
+### Pin Overview
+This pinout diagram shows all digital, analog, power, and communication pins of the XIAO nRF52840 Sense. For this project we use A0 for the flame sensor and D6 for the buzzer, along with 3V3 and GND for power.
+
+<img height="400" alt="image" src="https://github.com/user-attachments/assets/613011af-589a-43a0-98b3-4fcdd56728c4" />
+
 
 # 4. Make LED Blink to show that device is alive
 Before we build any real functionality, we first need a simple sign that the device is alive, like a heartbeat in a human.
@@ -176,6 +183,13 @@ This means you’re not detecting “fire yes/no,” but rather a continuous int
 
 <img height="400" alt="sensor" src="https://github.com/user-attachments/assets/4e2aa8d6-5deb-4ded-8dca-245552db5915" />
 
+You’ll notice a pair of red and black wires going to the breadboard rails. These “extend” the XIAO Sense’s power (red, 3.3V) and ground (black, GND) pins across the breadboard, making it easier to plug in additional components later and keeping everything neat and organized. From these rails, the flame sensor is powered by connecting to the `+` pin of the breakout board. Without this, the sensor wouldn’t turn on.
+
+Next, we connect the ground (GND) of the XIAO Sense to the GND of the flame sensor. This shared ground creates a common electrical reference between the devices. Without a shared ground, the signal coming from the sensor would appear “floating” and the XIAO wouldn’t be able to interpret it correctly. 
+
+Finally, the most important part is the signal wire. The flame sensor outputs an analog signal. This signal is routed from the flame sensor's A0 pin to the A0 analog input pin of the XIAO Sense.
+
+With these three essential connections: power, ground, and signal; the flame sensor becomes fully functional and ready to decode infrared light coming from flames.
 
 ### Code
 
@@ -220,6 +234,28 @@ Converts the analog voltage from the sensor into a number between 0–1023.
 `Serial.println(sensorValue)`
 You'll see the intensity change in the Serial Monitor when you bring a flame (or even a bright lighter LED) close to the sensor.
 
+**How to receive the Serial output?**
+The Arduino IDE has a built-in serial monitor. You can find it in the top-right corner (magnifying glass icon).
+
+**How to calibrate the sensor?**
+
+To calibrate the flame sensor, you use the small blue potentiometer (the tiny adjustable dial) on the sensor board. This dial controls the analog sensitivity by adjusting the internal reference voltage of the amplifier, which determines how much infrared light is required before the sensor output changes noticeably. 
+
+<img height="300" alt="image" src="https://github.com/user-attachments/assets/d3c0c60d-caf9-4447-b404-5922c26ad83b" />
+
+Turning the dial clockwise generally makes the sensor more sensitive, reacting to smaller amounts of IR light, while turning it counter-clockwise decreases sensitivity so that only stronger IR signals trigger a response. To calibrate it properly, open the Arduino Serial Monitor so you can observe the live sensor values. Then follow these steps:
+
+- Point the sensor at a flame (lighter) and watch how the analog values change.
+- If the numbers barely change when a flame is present, increase sensitivity by turning the dial clockwise in very small increments.
+- If the sensor reacts even without a flame (for example from sunlight or reflections), decrease sensitivity by turning the dial counter-clockwise.
+
+Stop adjusting when:
+- No flame → readings stay stable
+- Flame present → values change clearly and consistently
+
+**⚠️ For best results, avoid calibrating in direct sunlight. In genral, the sensor will not properly detect flames in direct sunlight.**
+
+
 # 6. Add the buzzer
 When fire alarm detects something, you’ll want the system to react in a way that’s impossible to miss.
 That’s where the active buzzer comes in. An active buzzer already contains its own oscillator, meaning you don’t have to generate tones or waveforms in software.
@@ -261,7 +297,7 @@ void loop() {
 ```
 
 
-# 7. Puting it all together
+# 7. Putting it all together
 
 By now, you’ve explored and tested every major component of your system individually:
 - the heartbeat LED shows the device is alive
@@ -281,4 +317,26 @@ Your final program should:
 
 Use the knowledge from the previous sections to write your own combined sketch.
 Once finished, you’ll have a fully working, responsive prototype fire alarm running on the XIAO nRF52840 Sense.
-In the folder `Sketches` of this repository you can also find an example solution.
+In the folder `Sketches` of this repository you can also find an example solution `7-simple-fire-alarm`.
+
+# 8. BONUS: Shake to disable fire alarm
+In this optional extension, you add a basic user interaction to your fire alarm using the built-in IMU of the XIAO nRF52840 Sense.
+The idea: when the alarm is active, only shaking the board will disable the alarm.
+
+This teaches you how to:
+- read acceleration values from the onboard IMU
+- detect shaking
+- implement a simple state machine (e.g., alarm active vs. alarm idle)
+
+You can refer to the example solution code in the `Sketches` folder called `8-shake-to-disable.ino`.
+
+> Hint: For this task you will have to install the `Seeed Arduino LSM6DS3` library using the Arduino library manager.
+
+# 9. BONUS: Cascading fire alarm
+Real fire-alarm systems often work in groups, where one alarm triggers others nearby.
+In this bonus task, you implement a simple version of this behavior using the XIAO’s on-board microphone.
+
+Your device should continuously listen for the characteristic sound pattern of another alarm (for example a buzzer tone).
+If it detects such a sound, your device should activate its own alarm — even if the flame sensor has not yet been triggered.
+
+You can refer to the example solution code in the `Sketches` folder if you want to use the microphone for the appliance that you build as the final assingment of the lecture.
