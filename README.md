@@ -38,7 +38,7 @@ Install Python 3:
 brew install python
 ```
 
-Make sure `python` is in your $PATH and can be rund from your command line. Potentially create an Alias for `python3` (ask chatGPT).
+⚠️ Make sure `python` is in your $PATH and can be rund from your command line. Potentially create an Alias for `python3` (ask chatGPT).
 
 #### Windows
 
@@ -68,7 +68,7 @@ Then:
 
 <img height="400" alt="arduino" src="https://github.com/user-attachments/assets/5f563fd4-3c65-4434-a0b5-8803135ecb2e" />
   
-2. Connect XIAO nRF52840 Sense via USB‑C  
+2. Connect XIAO nRF52840 Sense via USB‑C to your computer
 3. Select:
 
 ```
@@ -83,8 +83,6 @@ A blinking LED is our device saying:
 > I’m running, powered, and ready for instructions.
 
 It’s the very first diagnostic feature of almost every embedded system. If this step doesn’t work, nothing else will.
-
-
 
 Then, copy the following sketch into your Arduino IDE. Per default, a *.ino sketch will already be open, which you can just use.
 
@@ -110,9 +108,46 @@ void loop() {
 }
 ```
 
----
+**What is actually happening?**
 
-# 7. Step 2 – Flame Sensor Reading
+When your board boots, the microcontroller starts executing the code you uploaded to it. In Arduino terminology:
+
+`setup()` runs once, immediately after startup.
+This is where we configure pins, sensors, communication interfaces, and anything that needs to be initialized.
+
+`loop()` then runs over and over, forever, as long as the device has power.
+This is where the device spends most of its life—doing tasks, reading sensors, reacting to inputs, and updating outputs.
+
+To verify that the chip is truly running the `loop()` function, we toggle the built-in LED on and off. If the LED blinks, it proves:
+- your firmware successfully uploaded
+- the microcontroller is executing your program
+- basic GPIO output works
+- the timing functions (delay) work
+
+This is why almost every embedded tutorial starts with blinking an LED: it’s the embedded version of "Hello World", often also called "Hello Blinky".
+
+**Why does pulling the pin LOW turn the LED ON?**
+
+On this specific nRF52840 Sense board, the LED is wired in an active-LOW configuration.
+That means:
+- LED turns ON when the microcontroller pin is pulled to GND (LOW)
+- LED turns OFF when the pin is driven to HIGH (3.3V)
+
+The schematic shows that the LED’s anode (positive side) is connected to VCC through a resistor, and the cathode (negative side) goes to the P0.26 pin.
+So the microcontroller is essentially providing a path to ground to let current flow.
+
+<img width="328" height="456" alt="image" src="https://github.com/user-attachments/assets/0a4a5979-5c3c-4890-bafd-ee0a91c0c030" />
+
+If you imagine it like water flow:
+- HIGH = valve closed → no flow → LED off
+- LOW = valve open → current flows → LED on
+
+Understanding this is important because many embedded boards use active-LOW LEDs, and beginners often get confused when setting a pin to LOW makes something turn on.
+
+
+
+
+# 5. Connect the flame sensor and read sensor values
 
 ## Wiring
 
@@ -121,8 +156,6 @@ void loop() {
 | 3V3     | VCC         | Power       |
 | GND     | GND         | Ground      |
 | A0      | AO          | Analog signal |
-
----
 
 ## Sketch 2 – Flame Sensor
 
@@ -156,8 +189,6 @@ void loop() {
   delay(500);
 }
 ```
-
----
 
 # 8. Step 2.5 – Heartbeat LED + Sensor
 
@@ -204,8 +235,6 @@ No flame: ~800
 Flame:    ~200
 -> Threshold: ~400
 ```
-
----
 
 # 9. Step 3 – Add the Buzzer (Alarm Output)
 
@@ -285,45 +314,3 @@ void loop() {
   }
 }
 ```
-
----
-
-# 11. Fritzing Diagram (Optional)
-
-1. Install: https://fritzing.org/download  
-2. Add:
-   - XIAO nRF52840 Sense  
-   - Flame sensor  
-   - Buzzer  
-   - Breadboard  
-3. Wire exactly as described.  
-4. Export PNG or `.fzz` for documentation.
-
----
-
-# 12. Repo Structure
-
-```
-.
-├── README.md
-├── 01_Alive_LED
-│   └── 01_Alive_LED.ino
-├── 02_Flame_Sensor_Read
-│   └── 02_Flame_Sensor_Read.ino
-├── 03_Heartbeat_And_Sensor
-│   └── 03_Heartbeat_And_Sensor.ino
-└── 04_Fire_Alarm
-    └── 04_Fire_Alarm.ino
-```
-
----
-
-# 13. Done!
-
-This README is fully corrected for:
-
-- Python requirements  
-- Seeed nRF52 Serial fix  
-- Working sketches  
-
-If you want, I can generate a **PDF**, **ZIP with sketches**, or a **Fritzing file**.
