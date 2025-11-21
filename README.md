@@ -321,12 +321,12 @@ In the folder `Sketches` of this repository you can also find an example solutio
 
 # 8. BONUS: Shake to disable fire alarm
 In this optional extension, you add a basic user interaction to your fire alarm using the built-in IMU of the XIAO nRF52840 Sense.
-The idea: when the alarm is active, only a strong shake of the board will disable the alarm.
+The idea: when the alarm is active, only shaking the board will disable the alarm.
 
 This teaches you how to:
 - read acceleration values from the onboard IMU
-- detect sudden movement or “shake” patterns
-- implement a simple state machine (e.g., alarm active vs. alarm silenced)
+- detect shaking
+- implement a simple state machine (e.g., alarm active vs. alarm idle)
 
 You can refer to the example solution code in the `Sketches` folder if you want to use the inertial measurement unit for the appliance that you build as the final assingment of the lecture.
 
