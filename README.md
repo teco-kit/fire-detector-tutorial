@@ -261,7 +261,7 @@ void loop() {
 ```
 
 
-# 7. Puting it all together
+# 7. Putting it all together
 
 By now, you’ve explored and tested every major component of your system individually:
 - the heartbeat LED shows the device is alive
@@ -281,4 +281,24 @@ Your final program should:
 
 Use the knowledge from the previous sections to write your own combined sketch.
 Once finished, you’ll have a fully working, responsive prototype fire alarm running on the XIAO nRF52840 Sense.
-In the folder `Sketches` of this repository you can also find an example solution.
+In the folder `Sketches` of this repository you can also find an example solution (`7-simple-fire-alarm`).
+
+# 8. BONUS: Shake to disable fire alarm
+In this optional extension, you add a basic user interaction to your fire alarm using the built-in IMU of the XIAO nRF52840 Sense.
+The idea: when the alarm is active, a strong shake of the board temporarily disables the buzzer and stops the warning flashes.
+
+This teaches you how to:
+- read acceleration values from the onboard IMU
+- detect sudden movement or “shake” patterns
+- implement a simple state machine (e.g., alarm active vs. alarm silenced)
+
+You can refer to the example solution code if you want to use the inertial measurement unit for the appliance that you build as the final assingment of the lecture.
+
+# 9. BONUS: Cascading fire alarm
+Real fire-alarm systems often work in groups, where one alarm triggers others nearby.
+In this bonus task, you implement a simple version of this behavior using the XIAO’s on-board microphone.
+
+Your device should continuously listen for the characteristic sound pattern of another alarm (for example a buzzer tone).
+If it detects such a sound, your device should activate its own alarm — even if the flame sensor has not yet been triggered.
+
+You can refer to the example solution code if you want to use the microphone for the appliance that you build as the final assingment of the lecture.
