@@ -4,7 +4,7 @@
 #define FIRE_SENSOR_PIN A0
 #define BUZZER_PIN      6
 
-const int FIRE_THRESHOLD = 400; // adjust based on your readings
+const int FIRE_THRESHOLD = 40; // adjust based on your readings
 
 void setup() {
   Serial.begin(115200);
