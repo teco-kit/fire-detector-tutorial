@@ -65,6 +65,8 @@ Then:
 # 3. Setup the Board
 
 1. Take the board and put it onto the breadboard like shown in the image below.
+
+<img height="400" alt="arduino" src="https://github.com/user-attachments/assets/5f563fd4-3c65-4434-a0b5-8803135ecb2e" />
   
 2. Connect XIAO nRF52840 Sense via USB‑C  
 3. Select:
@@ -74,16 +76,17 @@ Tools → Board → Seeed nRF52 Boards → Seeed XIAO nRF52840 Sense
 Tools → Port → (Select XIAO USB port)
 ```
 
-# 4. Step 1 – Make LED Blink to show that alarm is active
+# 4. Make LED Blink to show that device is alive
 Before we build any real functionality, we first need a simple sign that the device is alive, like a heartbeat in a human.
 A blinking LED is our device saying:
 
 > I’m running, powered, and ready for instructions.
 
 It’s the very first diagnostic feature of almost every embedded system. If this step doesn’t work, nothing else will.
-It also gives immediate feedback to learners: “You uploaded code successfully — you’re in control.”
 
-Copy the following sketch into your Arduino IDE. Per default, a *.ino sketch will already be open.
+
+
+Then, copy the following sketch into your Arduino IDE. Per default, a *.ino sketch will already be open, which you can just use.
 
 ### Code
 
@@ -94,14 +97,15 @@ Copy the following sketch into your Arduino IDE. Per default, a *.ino sketch wil
 
 // this function is called once during startup
 void setup() {
-  pinMode(LED_PIN, OUTPUT);
+  pinMode(LED_PIN, OUTPUT); // configure the LED_PIN to be an output pin
 }
 
 // this function is called periodically after the device has booted
+// you can adjust the timing as you wish
 void loop() {
-  digitalWrite(LED_PIN, LOW);   // LED ON
+  digitalWrite(LED_PIN, LOW);   // LED ON, pulls the LED_PIN to ground
   delay(200);
-  digitalWrite(LED_PIN, HIGH);  // LED OFF
+  digitalWrite(LED_PIN, HIGH);  // LED OFF, pulls the LED_PIN high
   delay(1800);
 }
 ```
@@ -205,6 +209,8 @@ Flame:    ~200
 
 # 9. Step 3 – Add the Buzzer (Alarm Output)
 
+
+
 ## Wiring
 
 | XIAO Pin | Buzzer Pin |
@@ -212,9 +218,8 @@ Flame:    ~200
 | D6       | +          |
 | GND      | -          |
 
-Use a **small active buzzer**.
+<img height="400" alt="full" src="https://github.com/user-attachments/assets/b53d7e43-6a69-45fe-bf40-aa0ba5254fd3" />
 
----
 
 # 10. Step 4 – Full Fire Alarm
 
