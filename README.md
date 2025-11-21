@@ -330,6 +330,8 @@ This teaches you how to:
 
 You can refer to the example solution code in the `Sketches` folder if you want to use the inertial measurement unit for the appliance that you build as the final assingment of the lecture.
 
+> Hint: For this task you will have to install the `Seeed Arduino LSM6DS3` library using the Arduino library manager.
+
 # 9. BONUS: Cascading fire alarm
 Real fire-alarm systems often work in groups, where one alarm triggers others nearby.
 In this bonus task, you implement a simple version of this behavior using the XIAO’s on-board microphone.
