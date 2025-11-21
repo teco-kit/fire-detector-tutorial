@@ -1,6 +1,7 @@
 # 🔥 Fire Alarm Tutorial using Seeed XIAO nRF52840 Sense  
 This guide walks you through building a simple but functional fire-detection prototype using the Seeed XIAO nRF52840 Sense.
-It’s a hands-on introduction to reading analog sensors, reacting to thresholds, and driving outputs like LEDs and buzzers — essentially a compact example of how embedded systems sense the world and respond to it.
+It’s a hands-on introduction to reading analog sensors, reacting to thresholds, and driving outputs like LEDs and buzzers. 
+The tutorial is essentially a compact example of how embedded systems sense the world and respond to it.
 
 <img height="400" alt="image" src="https://github.com/user-attachments/assets/57433d65-d407-47e3-ba9c-10353f4bfc80" />
 
