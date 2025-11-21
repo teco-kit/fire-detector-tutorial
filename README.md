@@ -1,6 +1,7 @@
 # 🔥 Fire Alarm Tutorial using Seeed XIAO nRF52840 Sense  
 This guide walks you through building a simple but functional fire-detection prototype using the Seeed XIAO nRF52840 Sense.
-It’s a hands-on introduction to reading analog sensors, reacting to thresholds, and driving outputs like LEDs and buzzers — essentially a compact example of how embedded systems sense the world and respond to it.
+It’s a hands-on introduction to reading analog sensors, reacting to thresholds, and driving outputs like LEDs and buzzers. 
+The tutorial is essentially a compact example of how embedded systems sense the world and respond to it.
 
 <img height="400" alt="image" src="https://github.com/user-attachments/assets/57433d65-d407-47e3-ba9c-10353f4bfc80" />
 
@@ -317,7 +318,7 @@ Your final program should:
 
 Use the knowledge from the previous sections to write your own combined sketch.
 Once finished, you’ll have a fully working, responsive prototype fire alarm running on the XIAO nRF52840 Sense.
-In the folder `Sketches` of this repository you can also find an example solution `7-simple-fire-alarm`.
+In the folder `Sketches` of this repository you can also find an example solution `7-simple-fire-alarm.ino`.
 
 # 8. BONUS: Shake to disable fire alarm
 In this optional extension, you add a basic user interaction to your fire alarm using the built-in IMU of the XIAO nRF52840 Sense.
@@ -339,4 +340,7 @@ In this bonus task, you implement a simple version of this behavior using the XI
 Your device should continuously listen for the characteristic sound pattern of another alarm (for example a buzzer tone).
 If it detects such a sound, your device should activate its own alarm — even if the flame sensor has not yet been triggered.
 
-You can refer to the example solution code in the `Sketches` folder if you want to use the microphone for the appliance that you build as the final assingment of the lecture.
+You can refer to the example solution code in the `Sketches` folder called `9-full-system.ino`.
+
+> Tip: You can assume that the surrounding sounds are ignored and you trigger an alarm if you hear loud enough beeps from another fire alarm.
+> If you really want to go all in, you can add a cooldown for the alarm after shaking to reset.
