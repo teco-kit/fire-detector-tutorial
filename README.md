@@ -21,12 +21,13 @@ This tutorial builds a simple prototype fire alarm using:
 
 ## 2.1 Hardware
 
-- **Seeed XIAO nRF52840 Sense**
+- [Seeed XIAO nRF52840 Sense](https://wiki.seeedstudio.com/XIAO_BLE/)
+- Analog flame sensor (VCC / GND / AO)
+- Active buzzer (3.3 V compatible)
 - USB‑C data cable  
 - Breadboard  
 - Jumper wires  
-- **Analog flame/light sensor** (VCC / GND / AO)
-- **Active buzzer (3.3 V compatible)**
+
 
 > ⚠️ XIAO uses **3.3 V** logic. Never connect 5 V devices to GPIO pins.
 
@@ -81,6 +82,12 @@ Then:
 Tools → Board → Seeed nRF52 Boards → Seeed XIAO nRF52840 Sense
 Tools → Port → (Select XIAO USB port)
 ```
+
+### Pin Overview
+This pinout diagram shows all digital, analog, power, and communication pins of the XIAO nRF52840 Sense. For this project we use A0 for the flame sensor and D6 for the buzzer, along with 3V3 and GND for power.
+
+<img height="400" alt="image" src="https://github.com/user-attachments/assets/613011af-589a-43a0-98b3-4fcdd56728c4" />
+
 
 # 4. Make LED Blink to show that device is alive
 Before we build any real functionality, we first need a simple sign that the device is alive, like a heartbeat in a human.
@@ -314,14 +321,14 @@ In the folder `Sketches` of this repository you can also find an example solutio
 
 # 8. BONUS: Shake to disable fire alarm
 In this optional extension, you add a basic user interaction to your fire alarm using the built-in IMU of the XIAO nRF52840 Sense.
-The idea: when the alarm is active, a strong shake of the board temporarily disables the buzzer and stops the warning flashes.
+The idea: when the alarm is active, only a strong shake of the board will disable the alarm.
 
 This teaches you how to:
 - read acceleration values from the onboard IMU
 - detect sudden movement or “shake” patterns
 - implement a simple state machine (e.g., alarm active vs. alarm silenced)
 
-You can refer to the example solution code if you want to use the inertial measurement unit for the appliance that you build as the final assingment of the lecture.
+You can refer to the example solution code in the `Sketches` folder if you want to use the inertial measurement unit for the appliance that you build as the final assingment of the lecture.
 
 # 9. BONUS: Cascading fire alarm
 Real fire-alarm systems often work in groups, where one alarm triggers others nearby.
@@ -330,4 +337,4 @@ In this bonus task, you implement a simple version of this behavior using the XI
 Your device should continuously listen for the characteristic sound pattern of another alarm (for example a buzzer tone).
 If it detects such a sound, your device should activate its own alarm — even if the flame sensor has not yet been triggered.
 
-You can refer to the example solution code if you want to use the microphone for the appliance that you build as the final assingment of the lecture.
+You can refer to the example solution code in the `Sketches` folder if you want to use the microphone for the appliance that you build as the final assingment of the lecture.
