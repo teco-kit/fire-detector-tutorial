@@ -317,7 +317,7 @@ Your final program should:
 
 Use the knowledge from the previous sections to write your own combined sketch.
 Once finished, you’ll have a fully working, responsive prototype fire alarm running on the XIAO nRF52840 Sense.
-In the folder `Sketches` of this repository you can also find an example solution `7-simple-fire-alarm`.
+In the folder `Sketches` of this repository you can also find an example solution `7-simple-fire-alarm.ino`.
 
 # 8. BONUS: Shake to disable fire alarm
 In this optional extension, you add a basic user interaction to your fire alarm using the built-in IMU of the XIAO nRF52840 Sense.
