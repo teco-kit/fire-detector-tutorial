@@ -46,6 +46,8 @@ Install Python 3:
 brew install python
 ```
 
+Install [brew](https://brew.sh) first, if it's not installed.
+
 ⚠️ Make sure `python` is in your $PATH and can be rund from your command line. Potentially create an Alias for `python3` (ask chatGPT).
 
 #### Windows
@@ -122,7 +124,25 @@ void loop() {
 }
 ```
 
-**What is actually happening?**
+### Flash the nRF52840
+
+To flash the code to your microcontroller, click the "Upload" button (arrow) in the top left corner of the Arduino IDE. 
+It might be necessary to double-press the reset button of the microcontroller to make the upload work.
+
+If you're running macOS and experience the following error
+
+```
+Traceback (most recent call last): File "main.py", line 317, in File "click/core.py", line 1134, in call File "click/core.py", line 1040, in main File "click/_unicodefun.py", line 100, in _verify_python_env RuntimeError: Click will abort further execution because Python was configured to use ASCII as encoding for the environment. Consult https://click.palletsprojects.com/unicode-support/ for mitigation steps.
+```
+here's how fix it:
+- download [this](/adafruit-nrfutil) file
+- go to ~/Library/Arduino15/packages/Seeeduino/hardware/nrf52/1.1.12/tools/adafruit-nrfutil/macos/
+- replace the existing `adafruit-nrfutil` file with the downloaded file
+- restart the Arduino IDE and try to flash again
+
+
+
+### What does the code do?
 
 When your board boots, the microcontroller starts executing the code you uploaded to it. In Arduino terminology:
 
@@ -170,8 +190,8 @@ What is actually going on electrically?
 
 The sensor continuously outputs a voltage between 0 V and ~3.3 V, depending on how much infrared light it sees.
 
-- No flame → low voltage
-- Strong flame → higher voltage
+- No flame → high voltage
+- Strong flame → low voltage
 
 Your XIAO board measures this voltage using the ADC and gives you a number typically from 0 to 1023 (10-bit resolution), where:
 
