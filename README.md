@@ -139,6 +139,11 @@ here's how fix it:
 - go to ~/Library/Arduino15/packages/Seeeduino/hardware/nrf52/1.1.12/tools/adafruit-nrfutil/macos/
 - replace the existing `adafruit-nrfutil` file with the downloaded file
 - restart the Arduino IDE and try to flash again
+- macOS will probably complain and tell you it can't execute the file because it's not trusted
+- open the System Settings and head to "Privacy & Security", scroll down all the way and where it says "adafruit-nrfutil" click on "Open Anyway"
+- go back to the Arduino IDE and try to flash again
+- macOS will probably ask you if you're sure you want to execute this untrusted file; click "Open"
+- now it should actually work 🤦🏼‍♂️
 
 
 
