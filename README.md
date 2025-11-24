@@ -135,7 +135,7 @@ If you're running macOS and experience the following error
 Traceback (most recent call last): File "main.py", line 317, in File "click/core.py", line 1134, in call File "click/core.py", line 1040, in main File "click/_unicodefun.py", line 100, in _verify_python_env RuntimeError: Click will abort further execution because Python was configured to use ASCII as encoding for the environment. Consult https://click.palletsprojects.com/unicode-support/ for mitigation steps.
 ```
 here's how fix it:
-- download [this](/adafruit-nrfutil) file
+- download [this](https://github.com/teco-kit/fire-detector-tutorial/raw/refs/heads/main/adafruit-nrfutil) file
 - go to ~/Library/Arduino15/packages/Seeeduino/hardware/nrf52/1.1.12/tools/adafruit-nrfutil/macos/
 - replace the existing `adafruit-nrfutil` file with the downloaded file
 - restart the Arduino IDE and try to flash again
