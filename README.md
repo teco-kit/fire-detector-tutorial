@@ -295,6 +295,8 @@ Later, in the full sketch, we combine LED flashing and buzzer activation to crea
 
 ### Wiring
 
+**Pay extra attention when wiring the buzzer, the pinout depicted here might be flipped on the real buzzer!**
+
 <img height="400" alt="full" src="https://github.com/user-attachments/assets/09aedd64-bfea-4867-8ef8-eea9b9fdee08" />
 
 ### Code
