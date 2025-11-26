@@ -49,6 +49,7 @@ brew install python
 Install [brew](https://brew.sh) first, if it's not installed.
 
 ⚠️ Make sure `python` is in your $PATH and can be rund from your command line. Potentially create an Alias for `python3` (ask chatGPT).
+⚠️ If you experience any issues on macOS with compiling, please scroll down until "Flash the nRF52840", there's troubleshooting steps
 
 #### Windows
 
@@ -127,17 +128,19 @@ void loop() {
 ### Flash the nRF52840
 
 To flash the code to your microcontroller, click the "Upload" button (arrow) in the top left corner of the Arduino IDE. 
-It might be necessary to double-press the reset button of the microcontroller to make the upload work.
 
-If you're running macOS and experience the following error
+⚠️ **Some people experience the following issue when flashing: The microcontroller might not show up anymore, the port disconnects, etc. as soon as there is some program running on it. When this happens, you have to double-press the tiny reset button (quite rapid "click-click") of the microcontroller to make the upload work and connect the port again. If you get notifications saying the board disconnected, don't worry as long as it says "upload complete". To connect to the Serial Monitor, you have to double click "reset" again, select the port again and then it should work.**
+
+⚠️ **If you're running macOS and experience the following error**
 
 ```
 Traceback (most recent call last): File "main.py", line 317, in File "click/core.py", line 1134, in call File "click/core.py", line 1040, in main File "click/_unicodefun.py", line 100, in _verify_python_env RuntimeError: Click will abort further execution because Python was configured to use ASCII as encoding for the environment. Consult https://click.palletsprojects.com/unicode-support/ for mitigation steps.
 ```
 here's how fix it:
 - download [this](https://github.com/teco-kit/fire-detector-tutorial/raw/refs/heads/main/adafruit-nrfutil) file
-- go to ~/Library/Arduino15/packages/Seeeduino/hardware/nrf52/1.1.12/tools/adafruit-nrfutil/macos/
+- go to `~/Library/Arduino15/packages/Seeeduino/hardware/nrf52/1.1.12/tools/adafruit-nrfutil/macos/`, e.g. by opening the Terminal app: paste `open ~/Library/Arduino15/packages/Seeeduino/hardware/nrf52/1.1.12/tools/adafruit-nrfutil/macos/` and hit enter
 - replace the existing `adafruit-nrfutil` file with the downloaded file
+- go back to the command line in the Terminal app and paste `chmod +x ~/Library/Arduino15/packages/Seeeduino/hardware/nrf52/1.1.12/tools/adafruit-nrfutil/macos/adafruit-nrfutil` and hit enter
 - restart the Arduino IDE and try to flash again
 - macOS will probably complain and tell you it can't execute the file because it's not trusted
 - open the System Settings and head to "Privacy & Security", scroll down all the way and where it says "adafruit-nrfutil" click on "Open Anyway"
